@@ -1,8 +1,11 @@
 package com.example.android.popularmovies;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,8 +81,9 @@ public class DiscoveryScreenFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+                HashMap<String, String> movieDetails = gridDiscoveryScreenAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra("movieDetailMap", movieDetails);
+                startActivity(intent);
             }
         });
 
@@ -89,7 +92,16 @@ public class DiscoveryScreenFragment extends Fragment {
 
     private void updateMovies() {
         FetchMovieTask movieTask = new FetchMovieTask();
-        movieTask.execute("vote_average.desc");
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String apiKey = prefs.getString(getString(R.string.pref_apikey_key),
+                getString(R.string.pref_apikey_default));
+
+        SharedPreferences sortPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortBy = sortPrefs.getString(getString(R.string.pref_sort_key),
+                getString(R.string.pref_sort_highest_rated));
+
+        movieTask.execute(apiKey, sortBy);
     }
 
     @Override
@@ -113,7 +125,11 @@ public class DiscoveryScreenFragment extends Fragment {
             // These are the names of the JSON objects that need to be extracted.
             final String MOVIE_RESULTS = "results";
             final String MOVIE_TITLE = "title";
+            final String MOVIE_ORIGINAL_TITLE = "original_title";
             final String MOVIE_POSTER_PATH = "poster_path";
+            final String MOVIE_OVERVIEW = "overview";
+            final String MOVIE_VOTE_AVERAGE = "vote_average";
+            final String MOVIE_RELEASE_DATE = "release_date";
 
 
             JSONObject moviesJson = new JSONObject(moviesJsonStr);
@@ -126,7 +142,11 @@ public class DiscoveryScreenFragment extends Fragment {
 
                 HashMap movieInfoMap = new HashMap();
                 movieInfoMap.put(MOVIE_TITLE, movieJsonObj.getString(MOVIE_TITLE));
+                movieInfoMap.put(MOVIE_ORIGINAL_TITLE, movieJsonObj.getString(MOVIE_ORIGINAL_TITLE));
                 movieInfoMap.put(MOVIE_POSTER_PATH, getPosterSrc(movieJsonObj.getString(MOVIE_POSTER_PATH), "w185"));
+                movieInfoMap.put(MOVIE_OVERVIEW, movieJsonObj.getString(MOVIE_OVERVIEW));
+                movieInfoMap.put(MOVIE_VOTE_AVERAGE, movieJsonObj.getString(MOVIE_VOTE_AVERAGE));
+                movieInfoMap.put(MOVIE_RELEASE_DATE, movieJsonObj.getString(MOVIE_RELEASE_DATE));
                 moviesInfoList.add(movieInfoMap);
             }
             return moviesInfoList;
@@ -156,9 +176,11 @@ public class DiscoveryScreenFragment extends Fragment {
                 final String SORT_BY = "sort_by";
 
                 Uri buildUri = Uri.parse(MOVIE_DB_BASE_URL).buildUpon()
-                        .appendQueryParameter(API_KEY, "0c89001af818d213ce755fa297a87e32")
-                        .appendQueryParameter(SORT_BY, params[0])
+                        .appendQueryParameter(API_KEY, params[0])
+                        .appendQueryParameter(SORT_BY, params[1])
                         .build();
+
+                Log.v("urlllllllll", buildUri.toString());
 
                 URL url = new URL(buildUri.toString());
 

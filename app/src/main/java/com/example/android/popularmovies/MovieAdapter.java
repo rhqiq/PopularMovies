@@ -1,12 +1,12 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -52,7 +52,7 @@ public class MovieAdapter extends BaseAdapter {
                 if (hmKey.equals("poster_path")) {
                     moviePosterSrc.add(hmData.toString());
                 }
-                it.remove(); // avoids a ConcurrentModificationException
+//                it.remove(); // avoids a ConcurrentModificationException
             }
         }
     }
@@ -72,14 +72,15 @@ public class MovieAdapter extends BaseAdapter {
             gridView = inflater.inflate(R.layout.grid_item_movie, null);
 
             // set value into textview
-            TextView textView = (TextView) gridView
-                    .findViewById(R.id.grid_item_movie_textView);
-            textView.setText(movieTitle.get(position));
+//            TextView textView = (TextView) gridView
+//                    .findViewById(R.id.grid_item_movie_textView);
+//            textView.setText(movieTitle.get(position));
 
             // set image based on selected text
             ImageView imageView = (ImageView) gridView
                     .findViewById(R.id.grid_item_movie_imageView);
 
+            Log.v("XXXXXXXXXXXXXXX", moviePosterSrc.get(position));
             Picasso.with(context).load(moviePosterSrc.get(position)).into(imageView);
 
         } else {
@@ -95,8 +96,8 @@ public class MovieAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public HashMap<String, String> getItem(int position) {
+        return moviesInfoList.get(position);
     }
 
     @Override
