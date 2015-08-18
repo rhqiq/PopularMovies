@@ -71,9 +71,6 @@ public class DiscoveryScreenFragment extends Fragment {
         GridView gridview = (GridView) rootView.findViewById(R.id.gridview_movie);
 
 
-//        gridDiscoveryScreenAdapter = new ArrayAdapter<String>(getActivity(),
-//                R.layout.grid_item_movie, R.id.grid_item_forecast_textView, new ArrayList<String>());
-
         gridDiscoveryScreenAdapter = new MovieAdapter(getActivity(), new ArrayList<HashMap<String, String>>());
 
         gridview.setAdapter(gridDiscoveryScreenAdapter);
@@ -180,8 +177,6 @@ public class DiscoveryScreenFragment extends Fragment {
                         .appendQueryParameter(SORT_BY, params[1])
                         .build();
 
-                Log.v("urlllllllll", buildUri.toString());
-
                 URL url = new URL(buildUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
@@ -242,25 +237,8 @@ public class DiscoveryScreenFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList moviesInfoList) {
             if (!moviesInfoList.isEmpty()) {
-//                gridDiscoveryScreenAdapter.clear();
-                Log.v("Listtttttttttt : " ,moviesInfoList.toString());
                 gridDiscoveryScreenAdapter.setMoviesInfoList(moviesInfoList);
-/*
-                for (int i = 0; i < moviesInfoList.size(); i++) {
-                    HashMap tmpData = (HashMap<String, String>) moviesInfoList.get(i);
-                    Set<String> key = tmpData.keySet();
-                    Iterator it = key.iterator();
-                    while (it.hasNext()) {
-                        String hmKey = (String) it.next();
-                        String hmData = (String) tmpData.get(hmKey);
 
-                        if (hmKey.equals("title")) {
-                            gridDiscoveryScreenAdapter.add(hmData.toString());
-                        }
-                        it.remove(); // avoids a ConcurrentModificationException
-                    }
-                }
-                */
             }
         }
     }

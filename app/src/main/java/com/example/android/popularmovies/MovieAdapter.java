@@ -1,7 +1,6 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,33 +61,15 @@ public class MovieAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-//        View gridView;
-
-//        Log.v("TTTTTTT", convertView.toString());
-
-//        if (convertView == null) {
-
-//            gridView = new View(context);
-
-        // get layout from mobile.xml
         View gridView = inflater.inflate(R.layout.grid_item_movie, null);
 
-        // set value into textview
-//            TextView textView = (TextView) gridView
-//                    .findViewById(R.id.grid_item_movie_textView);
-//            textView.setText(movieTitle.get(position));
 
         // set image based on selected text
         ImageView imageView = (ImageView) gridView
                 .findViewById(R.id.grid_item_movie_imageView);
 
-        Log.v("XXXXXXXXXXXXXXX", moviePosterSrc.get(position));
+
         Picasso.with(context).load(moviePosterSrc.get(position)).into(imageView);
-
-//        } else {
-//            gridView = (View) convertView;
-//        }
-
         return gridView;
     }
 
