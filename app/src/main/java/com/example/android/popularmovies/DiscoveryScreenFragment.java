@@ -243,6 +243,7 @@ public class DiscoveryScreenFragment extends Fragment {
         protected void onPostExecute(ArrayList moviesInfoList) {
             if (!moviesInfoList.isEmpty()) {
 //                gridDiscoveryScreenAdapter.clear();
+                Log.v("Listtttttttttt : " ,moviesInfoList.toString());
                 gridDiscoveryScreenAdapter.setMoviesInfoList(moviesInfoList);
 /*
                 for (int i = 0; i < moviesInfoList.size(); i++) {

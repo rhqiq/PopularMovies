@@ -18,8 +18,8 @@ import java.util.Set;
 public class MovieAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<HashMap<String, String>> moviesInfoList;
-    private ArrayList<String> movieTitle = new ArrayList<String>() ;
-    private ArrayList<String> moviePosterSrc = new ArrayList<String>() ;
+    private ArrayList<String> movieTitle = new ArrayList<String>();
+    private ArrayList<String> moviePosterSrc = new ArrayList<String>();
 
     public MovieAdapter(Context context, ArrayList<HashMap<String, String>> moviesInfoList) {
         this.context = context;
@@ -62,30 +62,32 @@ public class MovieAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View gridView;
+//        View gridView;
 
-        if (convertView == null) {
+//        Log.v("TTTTTTT", convertView.toString());
 
-            gridView = new View(context);
+//        if (convertView == null) {
 
-            // get layout from mobile.xml
-            gridView = inflater.inflate(R.layout.grid_item_movie, null);
+//            gridView = new View(context);
 
-            // set value into textview
+        // get layout from mobile.xml
+        View gridView = inflater.inflate(R.layout.grid_item_movie, null);
+
+        // set value into textview
 //            TextView textView = (TextView) gridView
 //                    .findViewById(R.id.grid_item_movie_textView);
 //            textView.setText(movieTitle.get(position));
 
-            // set image based on selected text
-            ImageView imageView = (ImageView) gridView
-                    .findViewById(R.id.grid_item_movie_imageView);
+        // set image based on selected text
+        ImageView imageView = (ImageView) gridView
+                .findViewById(R.id.grid_item_movie_imageView);
 
-            Log.v("XXXXXXXXXXXXXXX", moviePosterSrc.get(position));
-            Picasso.with(context).load(moviePosterSrc.get(position)).into(imageView);
+        Log.v("XXXXXXXXXXXXXXX", moviePosterSrc.get(position));
+        Picasso.with(context).load(moviePosterSrc.get(position)).into(imageView);
 
-        } else {
-            gridView = (View) convertView;
-        }
+//        } else {
+//            gridView = (View) convertView;
+//        }
 
         return gridView;
     }
