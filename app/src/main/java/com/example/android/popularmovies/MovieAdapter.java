@@ -69,7 +69,8 @@ public class MovieAdapter extends BaseAdapter {
                 .findViewById(R.id.grid_item_movie_imageView);
 
 
-        Picasso.with(context).load(moviePosterSrc.get(position)).into(imageView);
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w185" + moviePosterSrc.get(position)).
+                into(imageView);
         return gridView;
     }
 

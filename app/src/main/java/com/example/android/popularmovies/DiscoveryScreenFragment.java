@@ -140,18 +140,13 @@ public class DiscoveryScreenFragment extends Fragment {
                 HashMap movieInfoMap = new HashMap();
                 movieInfoMap.put(MOVIE_TITLE, movieJsonObj.getString(MOVIE_TITLE));
                 movieInfoMap.put(MOVIE_ORIGINAL_TITLE, movieJsonObj.getString(MOVIE_ORIGINAL_TITLE));
-                movieInfoMap.put(MOVIE_POSTER_PATH, getPosterSrc(movieJsonObj.getString(MOVIE_POSTER_PATH), "w185"));
+                movieInfoMap.put(MOVIE_POSTER_PATH, movieJsonObj.getString(MOVIE_POSTER_PATH));
                 movieInfoMap.put(MOVIE_OVERVIEW, movieJsonObj.getString(MOVIE_OVERVIEW));
                 movieInfoMap.put(MOVIE_VOTE_AVERAGE, movieJsonObj.getString(MOVIE_VOTE_AVERAGE));
                 movieInfoMap.put(MOVIE_RELEASE_DATE, movieJsonObj.getString(MOVIE_RELEASE_DATE));
                 moviesInfoList.add(movieInfoMap);
             }
             return moviesInfoList;
-        }
-
-        private String getPosterSrc(String img, String posterSize) {
-
-            return "http://image.tmdb.org/t/p/" + posterSize + img;
         }
 
 

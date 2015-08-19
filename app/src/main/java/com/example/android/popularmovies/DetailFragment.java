@@ -52,7 +52,7 @@ public class DetailFragment extends Fragment {
                     .setText(movieDetail.get(MOVIE_OVERVIEW));
 
             ImageView imageView = (ImageView) rootView.findViewById(R.id.detail_poster_imageView);
-            Picasso.with(getActivity()).load(movieDetail.get(MOVIE_POSTER_PATH)).into(imageView);
+            Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w300" + movieDetail.get(MOVIE_POSTER_PATH)).into(imageView);
         }
         return rootView;
     }
