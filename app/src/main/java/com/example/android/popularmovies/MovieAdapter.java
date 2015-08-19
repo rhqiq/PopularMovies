@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2015 The Android Open Source Project
+ */
+
 package com.example.android.popularmovies;
 
 import android.content.Context;

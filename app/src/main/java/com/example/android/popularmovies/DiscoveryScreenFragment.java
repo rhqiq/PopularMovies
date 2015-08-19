@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2015 The Android Open Source Project
+ */
+
 package com.example.android.popularmovies;
 
 import android.content.Intent;
@@ -62,6 +66,7 @@ public class DiscoveryScreenFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /** instantiate an adaptor and populate the gridView*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +92,7 @@ public class DiscoveryScreenFragment extends Fragment {
         return rootView;
     }
 
+    /** reload the gridView by new data*/
     private void updateMovies() {
         FetchMovieTask movieTask = new FetchMovieTask();
 
@@ -94,8 +100,8 @@ public class DiscoveryScreenFragment extends Fragment {
         String apiKey = prefs.getString(getString(R.string.pref_apikey_key),
                 getString(R.string.pref_apikey_default));
 
-        SharedPreferences sortPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sortBy = sortPrefs.getString(getString(R.string.pref_sort_key),
+
+        String sortBy = prefs.getString(getString(R.string.pref_sort_key),
                 getString(R.string.pref_sort_highest_rated));
 
         movieTask.execute(apiKey, sortBy);
@@ -107,6 +113,7 @@ public class DiscoveryScreenFragment extends Fragment {
         updateMovies();
     }
 
+    /** fetching data through APIs in the background thread*/
     public class FetchMovieTask extends AsyncTask<String, Void, ArrayList> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
@@ -174,7 +181,7 @@ public class DiscoveryScreenFragment extends Fragment {
 
                 URL url = new URL(buildUri.toString());
 
-                // Create the request to OpenWeatherMap, and open the connection
+                // Create the request to TheMovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();

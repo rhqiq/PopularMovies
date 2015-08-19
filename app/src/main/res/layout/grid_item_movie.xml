@@ -10,6 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/grid_item_movie_imageView"
         android:scaleType="centerCrop"
-        android:src="@drawable/movie36"/>
+        android:src="@drawable/movie_icon"/>
 
 </LinearLayout>

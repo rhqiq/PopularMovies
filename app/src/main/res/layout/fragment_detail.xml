@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:scaleType="centerCrop"
-            android:src="@drawable/movie36" />
+            android:src="@drawable/movie_icon" />
 
         <TextView
             android:layout_width="match_parent"

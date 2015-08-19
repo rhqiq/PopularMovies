@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2015 The Android Open Source Project
+ */
+
 package com.example.android.popularmovies;
 
 import android.content.Intent;
@@ -21,11 +25,11 @@ public class DetailFragment extends Fragment {
     public DetailFragment() {
     }
 
+    /** get the intent object and populate the detail view*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final String MOVIE_TITLE = "title";
         final String MOVIE_ORIGINAL_TITLE = "original_title";
         final String MOVIE_POSTER_PATH = "poster_path";
         final String MOVIE_OVERVIEW = "overview";
