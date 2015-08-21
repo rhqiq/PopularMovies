@@ -44,6 +44,8 @@ import java.util.HashMap;
 public class DiscoveryScreenFragment extends Fragment {
 
     private MovieAdapter gridDiscoveryScreenAdapter;
+    private ArrayList<HashMap<String, String>> moviesInfoArrayList;
+    final private String MOVIE_KEY = "gridDiscoveryScreenArrayList";
 
     public DiscoveryScreenFragment() {
     }
@@ -52,6 +54,12 @@ public class DiscoveryScreenFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (savedInstanceState != null){
+            moviesInfoArrayList = (ArrayList<HashMap<String, String>>)savedInstanceState.getSerializable(MOVIE_KEY);
+        }else{
+            moviesInfoArrayList = new ArrayList<HashMap<String, String>>();
+        }
     }
 
     @Override
@@ -70,6 +78,12 @@ public class DiscoveryScreenFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(MOVIE_KEY, moviesInfoArrayList);
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      * instantiate an adaptor and populate the gridView
      */
@@ -81,8 +95,7 @@ public class DiscoveryScreenFragment extends Fragment {
 
         GridView gridview = (GridView) rootView.findViewById(R.id.gridview_movie);
 
-
-        gridDiscoveryScreenAdapter = new MovieAdapter(getActivity(), new ArrayList<HashMap<String, String>>());
+        gridDiscoveryScreenAdapter = new MovieAdapter(getActivity(), moviesInfoArrayList);
 
         gridview.setAdapter(gridDiscoveryScreenAdapter);
 
@@ -114,7 +127,7 @@ public class DiscoveryScreenFragment extends Fragment {
 
             String sortBy = prefs.getString(getString(R.string.pref_sort_key),
                     getString(R.string.pref_sort_highest_rated));
-            
+
             movieTask.execute(apiKey, sortBy);
         } else {
             Toast.makeText(getActivity(), "Network is not available!", Toast.LENGTH_SHORT).show();
@@ -257,7 +270,7 @@ public class DiscoveryScreenFragment extends Fragment {
         protected void onPostExecute(ArrayList moviesInfoList) {
             if (!moviesInfoList.isEmpty()) {
                 gridDiscoveryScreenAdapter.setMoviesInfoList(moviesInfoList);
-
+                moviesInfoArrayList = moviesInfoList;
             }
         }
     }

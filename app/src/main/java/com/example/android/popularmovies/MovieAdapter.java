@@ -27,6 +27,7 @@ public class MovieAdapter extends BaseAdapter {
     public MovieAdapter(Context context, ArrayList<HashMap<String, String>> moviesInfoList) {
         this.context = context;
         this.moviesInfoList = moviesInfoList;
+        setSource();
     }
 
     public void setMoviesInfoList(ArrayList<HashMap<String, String>> moviesInfoList) {
@@ -93,4 +94,7 @@ public class MovieAdapter extends BaseAdapter {
         return 0;
     }
 
+    public ArrayList<HashMap<String, String>> getMoviesInfoList() {
+        return moviesInfoList;
+    }
 }
