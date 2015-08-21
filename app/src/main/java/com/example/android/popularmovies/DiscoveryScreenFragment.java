@@ -4,8 +4,11 @@
 
 package com.example.android.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +70,9 @@ public class DiscoveryScreenFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /** instantiate an adaptor and populate the gridView*/
+    /**
+     * instantiate an adaptor and populate the gridView
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,19 +98,28 @@ public class DiscoveryScreenFragment extends Fragment {
         return rootView;
     }
 
-    /** reload the gridView by new data*/
+    /**
+     * reload the gridView by new data
+     */
     private void updateMovies() {
-        FetchMovieTask movieTask = new FetchMovieTask();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String apiKey = prefs.getString(getString(R.string.pref_apikey_key),
-                getString(R.string.pref_apikey_default));
+        // check if the network available
+        if (isNetworkAvailable()) {
+            FetchMovieTask movieTask = new FetchMovieTask();
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String apiKey = prefs.getString(getString(R.string.pref_apikey_key),
+                    getString(R.string.pref_apikey_default));
 
 
-        String sortBy = prefs.getString(getString(R.string.pref_sort_key),
-                getString(R.string.pref_sort_highest_rated));
+            String sortBy = prefs.getString(getString(R.string.pref_sort_key),
+                    getString(R.string.pref_sort_highest_rated));
+            
+            movieTask.execute(apiKey, sortBy);
+        } else {
+            Toast.makeText(getActivity(), "Network is not available!", Toast.LENGTH_SHORT).show();
+        }
 
-        movieTask.execute(apiKey, sortBy);
     }
 
     @Override
@@ -113,7 +128,9 @@ public class DiscoveryScreenFragment extends Fragment {
         updateMovies();
     }
 
-    /** fetching data through APIs in the background thread*/
+    /**
+     * fetching data through APIs in the background thread
+     */
     public class FetchMovieTask extends AsyncTask<String, Void, ArrayList> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
@@ -243,5 +260,12 @@ public class DiscoveryScreenFragment extends Fragment {
 
             }
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
